@@ -1,0 +1,30 @@
+<fieldset>
+    <legend>Просмотр сообщения</legend>
+        <dl>
+            <dt>
+                <label for="from">От кого:</label>
+            </dt>
+            <dd>
+                <div class="view">
+                    <?php echo $this->message['from'];?>
+                </div>
+            </dd>
+            <dt>
+                <label for="title">Заголовок:</label>
+            </dt>
+            <dd>
+                <div class="view">
+                    <?php echo $this->message['title'];?>
+                </div>
+            </dd>
+            <dt>
+                <label for="text">Текст:</label>
+            </dt>
+            <dd>
+                <div class="view">
+                    <?php echo nl2br($this->message['text']);?>
+                </div>
+            </dd>
+        </dl>
+    </form>
+</fieldset>

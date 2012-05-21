@@ -1,0 +1,34 @@
+<fieldset>
+    <legend>Редактировать пользователя</legend>
+    <form action="/user/update" method="post" class="update">
+        <dl>
+            <dt>
+                <label for="login">Логин</label>
+            </dt>
+            <dd>
+                <div class="input-over">
+                    <?php echo $this->formText("login", isset($this->data) ? $this->data['login'] : $this->user['login'], array('class' => 'required'));?>
+                </div>
+                <?php if (isset($this->error['login'])):?>
+                <ol class="error">
+                    <?php foreach (array_values($this->error['login']) as $error) echo '<li>'.$error.'</li>';?>
+                </ol>
+                <?php endif;?>
+            </dd>
+            <dt>
+                <label for="password">Пароль</label>
+            </dt>
+            <dd>
+                <div class="input-over">
+                    <?php echo $this->formPassword("password", null);?>
+                    <br /><span style="font-size:9px">Если не хотите изменять, оставьте поле пустым</span>
+                </div>
+            </dd>
+            <dt>
+            </dt>
+            <dd>
+                <?php echo $this->formSubmit("submit", "Сохранить");?>
+            </dd>
+        </dl>
+    </form>
+</fieldset>

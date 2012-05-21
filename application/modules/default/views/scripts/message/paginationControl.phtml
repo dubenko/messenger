@@ -1,0 +1,30 @@
+<?php if ($this->pageCount > 1):?>
+<div class="paging">
+    <span class="pages">Страница</span>
+    <ul>
+        <?php if (isset($this->previous)): ?>
+        <li>
+            <a href="<?php echo $this->url;?>&page=<?php echo $this->previous; ?>">Предыдущая</a>
+        </li>
+        <?php endif; ?>
+
+        <?php foreach ($this->pagesInRange as $page): ?>
+            <?php if ($page != $this->current): ?>
+            <li>
+                <a href="<?php echo $this->url;?>&<?php echo "&page=".$page?>">
+                <?php echo $page; ?>
+                </a>
+            </li>
+            <?php else: ?>
+            <li><span><?php echo $page; ?></span></li>
+            <?php endif; ?>
+        <?php endforeach; ?>
+
+        <?php if (isset($this->next)): ?>
+        <li>
+            <a href="<?php echo $this->url;?>&page=<?php echo $this->next; ?>">Следующая</a>
+        </li>
+        <?php endif; ?>
+    </ul>
+</div>
+<?php endif;?>

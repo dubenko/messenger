@@ -1,0 +1,65 @@
+<fieldset>
+    <legend>Редактировать сообщение</legend>
+    <form action="/admin/message/update" method="post" class="update">
+        <?php echo $this->formHidden("messageId", $this->message['id']);?>
+        <dl>
+            <dt>
+                <label for="from">От кого</label>
+            </dt>
+            <dd>
+                <div class="input-over">
+                    <?php echo $this->formText("from", isset($this->data) ? $this->data['from'] : $this->message['from'], array('class' => 'required'));?>
+                </div>
+                <?php if (isset($this->error['from'])):?>
+                <ol class="error">
+                    <?php foreach (array_values($this->error['from']) as $error) echo '<li>'.$error.'</li>';?>
+                </ol>
+                <?php endif;?>
+            </dd>
+            <dt>
+                <label for="to">Кому</label>
+            </dt>
+            <dd>
+                <div class="input-over">
+                    <?php echo $this->formText("to", isset($this->data) ? $this->data['to'] : $this->message['to'], array('class' => 'required'));?>
+                </div>
+                <?php if (isset($this->error['to'])):?>
+                <ol class="error">
+                    <?php foreach (array_values($this->error['to']) as $error) echo '<li>'.$error.'</li>';?>
+                </ol>
+                <?php endif;?>
+            </dd>
+            <dt>
+                <label for="title">Заголовок</label>
+            </dt>
+            <dd>
+                <div class="input-over">
+                    <?php echo $this->formText("title", isset($this->data) ? $this->data['title'] : $this->message['title'], array('class' => 'required'));?>
+                </div>
+                <?php if (isset($this->error['title'])):?>
+                <ol class="error">
+                    <?php foreach (array_values($this->error['title']) as $error) echo '<li>'.$error.'</li>';?>
+                </ol>
+                <?php endif;?>
+            </dd>
+            <dt>
+                <label for="text">Текст</label>
+            </dt>
+            <dd>
+                <div class="input-over">
+                    <?php echo $this->formTextarea("text", isset($this->data) ? $this->data['text'] : $this->message['text'], array('class' => 'required'));?>
+                </div>
+                <?php if (isset($this->error['text'])):?>
+                <ol class="error">
+                    <?php foreach (array_values($this->error['text']) as $error) echo '<li>'.$error.'</li>';?>
+                </ol>
+                <?php endif;?>
+            </dd>
+            <dt>
+            </dt>
+            <dd>
+                <?php echo $this->formSubmit("submit", "Сохранить");?>
+            </dd>
+        </dl>
+    </form>
+</fieldset>

@@ -1,0 +1,41 @@
+<fieldset>
+    <legend>Добавить пользователя</legend>
+    <form action="/admin/user/add" method="post" class="add">
+        <dl>
+            <dt>
+                <label for="login">Логин</label>
+            </dt>
+            <dd>
+                <div class="input-over">
+                    <?php echo $this->formText("login", isset($this->data) ? $this->data['login'] : null, array('class' => 'required'));?>
+                </div>
+                <?php if (isset($this->error['login'])):?>
+                <ol class="error">
+                    <?php foreach (array_values($this->error['login']) as $error) echo '<li>'.$error.'</li>';?>
+                </ol>
+                <?php endif;?>
+            </dd>
+            <dt>
+                <label for="password">Пароль</label>
+            </dt>
+            <dd>
+                <div class="input-over">
+                    <?php echo $this->formPassword("password", null, array('class' => 'required'));?>
+                </div>
+            </dd>
+            <dt>
+                <label for="role">Роль</label>
+            </dt>
+            <dd>
+                <div class="input-over">
+                    <?php echo $this->formRadio("role", isset($this->data) ? $this->data['role'] : 'user', array(), array('user' => 'Пользователь', 'admin' => 'Администратор'));?>
+                </div>
+            </dd>
+            <dt>
+            </dt>
+            <dd>
+                <?php echo $this->formSubmit("submit", "Сохранить");?>
+            </dd>
+        </dl>
+    </form>
+</fieldset>

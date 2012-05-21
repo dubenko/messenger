@@ -1,0 +1,144 @@
+<?php
+/**
+ * модель новинкок
+ * @author irek
+*/
+
+class Model_LatestVideo extends Shanty_Mongo_Document
+{
+	static protected $_db = 'ivi';
+	static protected $_collection = 'latest';
+	
+	protected static $_requirements = array(
+		'v' => array('Document:Model_Video', 'AsReference'),
+		'date'
+	);
+	
+	/**
+	 * Получить все новинки
+	 * @param $limit -int
+	 */
+	static function getAll($limit)
+	{
+		$cache = Zend_Registry::get('cache');
+		
+		if(!($videos = $cache->load('latest_'.$limit)))
+		{
+			$videos = self::all()->limit($limit);
+			$cache->save($videos, 'latest_'.$limit, array(), 60 * 30);
+		}
+		
+		return $videos;
+	}
+
+    /**
+     * cached version for latest video playlist
+     * @static
+     * @return array|mixed
+     */
+    static function getAllForPlaylist()
+    {
+        $cache = Zend_Registry::get('cache');
+        if (!($result = $cache->load("latest_video")) || true)
+        {
+            $result = Model_Playlist::one(array('type' => Model_Playlist::PL_TYPE_AUTO, 'title' => Model_Playlist::PL_NAME_LATEST));
+            if (is_null($result))//какое-то бесполезное действие
+            {
+                //Create empty
+                $result = Model_Playlist::makePlaylist(Model_Playlist::PL_NAME_LATEST, Model_Playlist::PL_TYPE_AUTO);
+                $result->save();
+            }
+            $latestVideo = array();
+	        $i = 0;
+            foreach ($result->vs as $v)
+            {
+//				if (isset($v->s) && $v->s == Model_Video::V_STATUS_VISIBLE)
+				{
+					$v['artists_html'] = Model_Video::getVideoArtistsHtml($v);
+					$v['artists_text'] = Model_Video::getVideoArtistsText($v);
+					array_push($latestVideo, $v->export());
+				}
+	            if ($i >= 25) { break; }
+	            $i++;
+            }
+//Zend_Debug::dump(count($latestVideo)); die;
+	        Model_Playlist::updateLatestPlaylist();
+<<<<<<< local
+=======
+//	        Zend_Debug::dump(count($latestVideo)); die;
+>>>>>>> other
+//	        die;
+	        Model_Playlist::updatePopularPlaylist();
+//Zend_Debug::dump($latestVideo); die;
+            $bufferLatestVideo = array_slice($latestVideo,15);
+            $latestVideo = array_slice($latestVideo,0,15);
+            shuffle($bufferLatestVideo);
+            $latestVideo = array_merge($latestVideo, array_slice($bufferLatestVideo,0,10));
+            $playlist = array('_id' => (string)$result->_id, 'vs'  => $latestVideo);
+            $json = json_encode($playlist);
+            $cache->save($json, "latest_video", array(), 60*60*12);
+            $result = $json; 
+        }
+		return json_decode($result);
+    }
+	
+	/**
+	 * Добавить видео в коллекцию новинок
+	 * @param $id int - id видео
+	 */
+	function add($id)
+	{
+		$video = Model_Video::getVideo($id);
+		
+		$data = new Model_LatestVideo;
+		$data->rel    = 0;
+		$data->v      = $video;
+		$data->title  = $video['title'];
+		$data->vid    = $id;
+		$data->artist = $video['a'][0]['title'];
+		$data->date   = new MongoDate(time());
+		$data->save();
+
+        self::updateCache();
+
+		return array('vid' => $id, 'title' => $video['title'], 'artist' => $video['a'][0]['title'], 'rel' => 0);
+	}
+	
+	/**
+	 * Удалить видео
+	 * @param $id - int
+	 */
+	static function deleteVideo($id)
+	{
+		$video = self::one(array("vid" => $id));
+		$result = $video->delete();
+		
+		if($result == true)
+		{
+			self::updateCache();
+			return $id;			
+		}
+		else
+			return 'error';
+	}
+	
+	/**
+	 * Редактировать вес новинки
+	 * @param $id int
+	 * @param $res int 
+	 */
+	static function updateRel($id, $rel)
+	{
+		$video = self::one(array("vid" => $id));
+		$video->rel = intval($rel);
+		$video->save();
+
+        self::updateCache();
+	}
+	
+	static function updateCache()
+	{
+		$cache = Zend_Registry::get('cache');
+		$cache->remove("latest_video"); //с главной
+	}
+}

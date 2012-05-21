@@ -1,0 +1,69 @@
+<div class="filter-lnk">
+    <?php switch ($this->filter)
+          {
+            case 'all':
+                echo '<span>Все</span> | <a href="/message?filter=to">Входящие</a> | <a href="/message?filter=from">Исходящие</a>';
+                break;
+            case 'to':
+                echo '<a href="/message">Все</a> | <span>Входящие</span> | <a href="/message?filter=from">Исходящие</a>';
+                break;
+            case 'from':
+                echo '<a href="/message">Все</a> | <a href="/message?filter=to">Входящие</a> | <span>Исходящие</span>';
+                break;
+          }
+    ?>
+</div>
+
+<?php
+    $sorting = array(
+        'id'  => array('url' => '/message?sort=id', 'name' => 'Id'),
+        'title' => array('url' => '/message?sort=title', 'name' => 'Заголовок'),
+        'from' => array('url' => '/message?sort=from', 'name' => 'От кого'),
+        'to' => array('url' => '/message?sort=to', 'name' => 'Кому'),
+        'createDate' => array('url' => '/message?sort=createDate', 'name' => 'Дата создания'),
+    );
+?>
+<table class="list">
+    <tr>
+        <?php foreach ($sorting as $sort => $param):?>
+        <th><a href="<?php echo $param['url'];?><?php echo $this->sort == $sort && $this->order == "asc" ? "&amp;order=desc" : "";?>" class="<?php echo $this->sort == $sort ? "sorted ".($this->order == "asc" ? "desc" : "asc") : "";?>"><?php echo $param['name']?></a></th>
+        <?php endforeach;?>
+        <th><span>Действия</span></th>
+    </tr>
+
+    <?php $c = 1; foreach ($this->messages as $message):?>
+    <tr <?php echo $c % 2 == 0 ? 'class="red"' : ""; $c++; ?>>
+        <td><?php echo $message['id'];?></td>
+        <td><?php echo $message['title'];?></td>
+        <td><?php echo $message['from'];?></td>
+        <td><?php echo $message['to'];?></td>
+        <td><?php echo $message['createDate'];?></td>
+        <td>
+            <?php if ($this->user['login'] == $message['from']):?>
+                <a class="view-lnk" href="/message/view?messageId=<?php echo $message['id'];?>">Просмотреть</a> | <a class="update-lnk" href="/message/update?messageId=<?php echo $message['id'];?>">Редактировать</a> | <a href="/message/delete?messageId=<?php echo $message['id'];?>" onclick="return confirm('Удалить?')">Удалить</a>
+            <?php else:?>
+                <a class="view-lnk" href="/message/view?messageId=<?php echo $message['id'];?>">Просмотреть</a>
+            <?php endif; ?>
+        </td>
+    </tr>
+    <?php endforeach;?>
+</table>
+
+<?php echo $this->paginationControl($this->paginator, "Elastic", "message/paginationControl.phtml", array("url" => "/message?".($this->sort != 'messageId' ? '&amp;sort='.$this->sort : '').($this->order != 'asc' ? '&amp;order='.$this->order : '')))?>
+<a class="add-lnk" href="/message/add">Добавить сообщение</a>
+
+<div class="filter-lnk">
+    <?php switch ($this->filter)
+          {
+            case 'all':
+                echo '<span>Все</span> | <a href="/message?filter=to">Входящие</a> | <a href="/message?filter=from">Исходящие</a>';
+                break;
+            case 'to':
+                echo '<a href="/message">Все</a> | <span>Входящие</span> | <a href="/message?filter=from">Исходящие</a>';
+                break;
+            case 'from':
+                echo '<a href="/message">Все</a> | <a href="/message?filter=to">Входящие</a> | <span>Исходящие</span>';
+                break;
+          }
+    ?>
+</div>

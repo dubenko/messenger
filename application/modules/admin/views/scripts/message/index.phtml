@@ -1,0 +1,43 @@
+<div class="filter-lnk">
+    <a href="/admin/message/filter?<?php echo implode("&amp;", $this->filterUri)?>">Отфильтровать</a>
+</div>
+<a href="/admin/message" class="drop-filter">Отменить фильтр</a>
+
+<?php
+    $sorting = array(
+        'id'  => array('url' => '/admin/message?sort=id', 'name' => 'Id'),
+        'title' => array('url' => '/admin/message?sort=title', 'name' => 'Заголовок'),
+        'from' => array('url' => '/admin/message?sort=from', 'name' => 'От кого'),
+        'to' => array('url' => '/admin/message?sort=to', 'name' => 'Кому'),
+        'createDate' => array('url' => '/admin/message?sort=createDate', 'name' => 'Дата создания'),
+    );
+?>
+<table class="list">
+    <tr>
+        <?php foreach ($sorting as $sort => $param):?>
+        <th><a href="<?php echo $param['url'];?><?php echo $this->sort == $sort && $this->order == "asc" ? "&amp;order=desc" : "";?>" class="<?php echo $this->sort == $sort ? "sorted ".($this->order == "asc" ? "desc" : "asc") : "";?>"><?php echo $param['name']?></a></th>
+        <?php endforeach;?>
+        <th><span>Действия</span></th>
+    </tr>
+
+    <?php $c = 1; foreach ($this->messages as $message):?>
+    <tr <?php echo $c % 2 == 0 ? 'class="red"' : ""; $c++; ?>>
+        <td><?php echo $message['id'];?></td>
+        <td><?php echo $message['title'];?></td>
+        <td><?php echo $message['from'];?></td>
+        <td><?php echo $message['to'];?></td>
+        <td><?php echo $message['createDate'];?></td>
+        <td>
+            <a class="update-lnk" href="/admin/message/update?messageId=<?php echo $message['id'];?>">Редактировать</a> | <a href="/admin/message/delete?messageId=<?php echo $message['id'];?>" onclick="return confirm('Удалить?')">Удалить</a>
+        </td>
+    </tr>
+    <?php endforeach;?>
+</table>
+
+<?php echo $this->paginationControl($this->paginator, "Elastic", "message/paginationControl.phtml", array("url" => "/admin/message?".($this->sort != 'messageId' ? '&amp;sort='.$this->sort : '').($this->order != 'asc' ? '&amp;order='.$this->order : '')))?>
+<a class="add-lnk" href="/admin/message/add">Добавить сообщение</a>
+
+<div class="filter-lnk">
+    <a href="/admin/message/filter?<?php echo implode("&amp;", $this->filterUri)?>">Отфильтровать</a>
+</div>
+<a href="/admin/message" class="drop-filter">Отменить фильтр</a>

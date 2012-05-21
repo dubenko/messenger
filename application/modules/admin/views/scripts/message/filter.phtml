@@ -1,0 +1,29 @@
+<fieldset class="filter">
+    <legend>Фильтровать таблицу</legend>
+    <form action="/admin/message" method="post" >
+        <dl>
+            <dt>
+                <label for="from">От кого</label>
+            </dt>
+            <dd>
+                <div class="input-over">
+                    <?php echo $this->formText("filter[from]", $this->filter['from']);?>
+                </div>
+            </dd>
+            <dt>
+                <label for="to">Кому</label>
+            </dt>
+            <dd>
+                <div class="input-over">
+                    <?php echo $this->formText("filter[to]", $this->filter['to']);?>
+                </div>
+            </dd>
+            <dt class="hidden">
+                OK
+            </dt>
+            <dd>
+                <input type="submit" value="OK" />
+            </dd>
+        </dl>
+    </form>
+</fieldset>

@@ -1,0 +1,24 @@
+<?php echo $this->doctype();?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <?php echo $this->headTitle("Don't stop the messenger");?>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <link rel="shortcut icon" href="/img/favicon.ico" >
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <?php echo $this->headMeta();?>
+        <meta name="Document-state" content="Static"/>
+        <meta name="URL" content="absolute_url"/>
+        <meta name="Distribution" content="global"/>
+        <meta name="Resource-type" content="document"/>
+        <meta name="robots" content="all"/>
+        <meta name="revisit-after" content="1 days"/>
+        <link rel="shortcut icon" href="/img/favicon.ico"/>
+        <?php
+            echo $this->headScript();
+            echo $this->headLink();
+        ?>
+    </head>
+    <body>
+        <?php echo $this->layout()->content;?>
+    </body>
+</html>

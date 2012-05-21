@@ -1,0 +1,33 @@
+<?php
+    $sorting = array(
+        'id'  => array('url' => '/admin?sort=id', 'name' => 'Id'),
+        'login' => array('url' => '/admin?sort=login', 'name' => 'Логин'),
+        'role' => array('url' => '/admin?sort=role', 'name' => 'Роль'),
+        'messageCount' => array('url' => '/admin?sort=messageCount', 'name' => 'Количество сообщений'),
+        'createDate' => array('url' => '/admin?sort=createDate', 'name' => 'Дата создания'),
+    );
+?>
+<table class="list">
+    <tr>
+        <?php foreach ($sorting as $sort => $param):?>
+        <th><a href="<?php echo $param['url'];?><?php echo $this->sort == $sort && $this->order == "asc" ? "&amp;order=desc" : "";?>" class="<?php echo $this->sort == $sort ? "sorted ".($this->order == "asc" ? "desc" : "asc") : "";?>"><?php echo $param['name']?></a></th>
+        <?php endforeach;?>
+        <th><span>Действия</span></th>
+    </tr>
+
+    <?php $c = 1; foreach ($this->users as $user):?>
+    <tr <?php echo $c % 2 == 0 ? 'class="red"' : ""; $c++; ?>>
+        <td><?php echo $user['id'];?></td>
+        <td><?php echo $user['login'];?></td>
+        <td><?php echo $user['role'];?></td>
+        <td><?php echo $user['messageCount'];?></td>
+        <td><?php echo $user['createDate'];?></td>
+        <td>
+            <a class="update-lnk" href="/admin/message?filter[from]=<?php echo $user['login'];?>">Сообщения пользователя</a> | <a class="update-lnk" href="/admin/user/update?userId=<?php echo $user['id'];?>">Редактировать</a> | <a href="/admin/user/delete?userId=<?php echo $user['id'];?>" onclick="return confirm('Удалить?')">Удалить</a>
+        </td>
+    </tr>
+    <?php endforeach;?>
+</table>
+
+<?php echo $this->paginationControl($this->paginator, "Elastic", "user/paginationControl.phtml", array("url" => "/admin?".($this->sort != 'userId' ? '&amp;sort='.$this->sort : '').($this->order != 'asc' ? '&amp;order='.$this->order : '')))?>
+<a class="add-lnk" href="/admin/user/add">Добавить пользователя</a>

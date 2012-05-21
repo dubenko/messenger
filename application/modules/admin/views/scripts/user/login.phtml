@@ -1,0 +1,41 @@
+<div class="login-admin">
+    <h1 class="login-h1">Раздел администратора</h1>
+    <form action="/admin/user/login" method="post" class="login-form">
+        <ul>
+            <li>
+                <label for="login">
+                    Логин:
+                </label>
+                <div class="input-over">
+                    <?php echo $this->formText("login", isset($this->data) ? $this->data['login'] : null, array('class' => 'required'));?>
+                </div>
+                <?php if (isset($this->error['login'])):?>
+                <ol class="error">
+                    <?php foreach (array_values($this->error['login']) as $error) echo '<li>'.$error.'</li>';?>
+                </ol>
+                <?php endif;?>
+            </li>
+            <li>
+                <label for="password">
+                    Пароль:
+                </label>
+                <div class="input-over">
+                    <?php echo $this->formPassword("password", null, array('class' => 'required'));?>
+                </div>
+                <?php if (isset($this->error['password'])):?>
+                <ol class="error">
+                    <?php foreach (array_values($this->error['password']) as $error) echo '<li>'.$error.'</li>';?>
+                </ol>
+                <?php endif;?>
+            </li>
+            <li>
+                <?php echo $this->formSubmit("submit", "Войти", array("class" => "button"));?>
+                <?php if (isset($this->errorLoginForm)):?>
+                <label class="error">
+                    <?php echo $this->errorLoginForm;?>
+                </label>
+                <?php endif;?>
+            </li>
+        </ul>
+    </form>
+</div>

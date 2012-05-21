@@ -1,0 +1,32 @@
+<?php echo $this->doctype();?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Admin</title>
+        <?php
+            echo $this->headScript();
+            echo $this->headLink();
+        ?>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="header">
+                <h1><a href="/">Раздел пользователя</a><br />
+                <a href="/admin">Раздел амдинистратора</a></h1>
+                <a class="logout" href="/admin/user/logout">Выйти из системы</a>
+                <div class="menu">
+                    <div class="block">
+                        <a href="/admin">Пользователи</a><br />
+                        <a href="/admin/message">Сообщения</a>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <?php echo $this->layout()->content;?>
+            </div>
+            <div class="footer">
+                <?php echo date("Y");?> &copy; messenger
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,25 @@
+<?php
+    $config = Zend_Registry::get('config');
+    echo $this->doctype();
+?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Messenger</title>
+        <?php
+            foreach ($config->sharedStyles as $style)
+            {
+                $this->headLink()->appendStylesheet($style);
+            }
+            echo $this->headRevisionLink();
+            foreach ($config->sharedScripts as $script)
+            {
+                $this->headScript()->appendFile($script);
+            }
+            echo $this->headRevisionScript();
+        ?>
+    </head>
+    <body>
+        <?php echo $this->layout()->content;?>
+    </body>
+</html>
